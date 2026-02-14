@@ -5,8 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --mode development --open",
+    "start:host": "webpack serve --mode development --open",
+    "start:remote": "cd remote-character && npm start",
+    "start:all": "concurrently \"npm run start:host\" \"npm run start:remote\"",
     "build": "webpack --mode production",
-    "dev": "webpack serve --mode development"
+    "build:remote": "cd remote-character && npm run build",
+    "build:all": "npm run build && npm run build:remote",
+    "dev": "webpack serve --mode development",
+    "install:all": "npm install && cd remote-character && npm install"
   },
   "keywords": ["webpack", "react", "boilerplate"],
   "author": "",
@@ -20,6 +26,7 @@
     "@babel/preset-env": "^7.23.0",
     "@babel/preset-react": "^7.22.0",
     "babel-loader": "^9.1.0",
+    "concurrently": "^8.2.2",
     "css-loader": "^6.8.0",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.0",

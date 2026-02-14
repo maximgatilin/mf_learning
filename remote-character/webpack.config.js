@@ -4,10 +4,22 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 
 module.exports = {
   entry: './src/index.js',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  devServer: {
+    port: 3001,
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    compress: false,
+    hot: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    clean: true,
+    publicPath: 'http://localhost:3001/',
   },
   module: {
     rules: [
@@ -25,20 +37,20 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
-      {
-        test: /\.(mp3|wav|ogg)$/,
-        type: 'asset/resource',
-      },
     ],
   },
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+  optimization: {
+    minimize: false,
+  },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'host',
-      remotes: {
-        remoteCharacter: 'remoteCharacter@http://localhost:3001/remoteEntry.js',
+      name: 'remoteCharacter',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './Character': './src/Character',
       },
       shared: {
         react: {
@@ -55,16 +67,5 @@ module.exports = {
       template: './public/index.html',
     }),
   ],
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'public'),
-    },
-    compress: true,
-    port: 3000,
-    hot: true,
-    open: true,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-  },
 };
+
