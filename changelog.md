@@ -1,3 +1,6 @@
+# 16.02.26
+Изучил стандартную ошибку микрофронтов - https://webpack.js.org/concepts/module-federation/#uncaught-error-shared-module-is-not-available-for-eager-consumption. Понял что надо добавить eager: true для shared dependencies, так как если этого не сделать либа не попадает в основной бандл и при обращении к ней будет ошибка.
+
 # 14.02.26
 
 * Переделал архитектуру с использованием микрофронтенда
